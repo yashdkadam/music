@@ -4,18 +4,18 @@ if(localStorage.getItem('ind') != undefined || localStorage.getItem('ind') != Na
     ind = Math.floor(Math.random()*localStorage.getItem('size'));
 }
 async function getMp3Url(q) {
-    let res = await $.get({url:'https://apiyoutube.cc/check.php?callback=jQuery34108672477917974195_1666787018121&v=' + q, Cache: false});
+    let res = await $.get({url:'https://gentle-waters-55640.herokuapp.com/api/mp3/?q=' + q, Cache: false});
     // let data = Object.values(res);
-    var i = 1;
-    res = res.split('"')
-    arr = []
-    for (index in res) {
-        if (res[index].includes('::')) {
-            arr.push(res[index]);
-        }
-    }
-    mp3Url = "https://apiyoutube.cc/m4a/" + arr[1] + "::" + arr[0];
-    return mp3Url;
+    // var i = 1;
+    // res = res.split('"')
+    // arr = []
+    // for (index in res) {
+    //     if (res[index].includes('::')) {
+    //         arr.push(res[index]);
+    //     }
+    // }
+    // mp3Url = "https://apiyoutube.cc/m4a/" + arr[1] + "::" + arr[0];
+    return res[mp3Url];
 }
 
 track_list = [];
@@ -30,11 +30,11 @@ async function getTrackResponse() {
   for (index in data) {
     track_list.push(data[index]);
   }
-  console.log(track_list);
+  // console.log(track_list);
 }
 getTrackResponse();
 let loop = setInterval(() => {
-  console.log("wait");
+  // console.log("wait");
   if (track_list.length > 0) {
     start();
     clearInterval(loop);
@@ -54,7 +54,7 @@ async function start() {
   <source src=${url} type="audio/webm" id="src">
 </audio>
 </div>`)
-  console.log(url);
+  // console.log(url);
   if(localStorage.getItem('size') != undefined){
       var size = localStorage.getItem('size');
       ind = Math.floor(Math.random()*track_list.length);
@@ -62,6 +62,6 @@ async function start() {
     localStorage.setItem('ind', Math.floor(Math.random()*track_list.length));
     localStorage.setItem('size', track_list.length);
 
-  console.log(ind);
+  // console.log(ind);
 }
 
