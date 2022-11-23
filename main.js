@@ -1,21 +1,30 @@
-if(localStorage.getItem('ind') != undefined || localStorage.getItem('ind') != NaN){
-    var ind = localStorage.getItem('ind');
-} else{
-    ind = Math.floor(Math.random()*localStorage.getItem('size'));
+var ind = 0;
+if(localStorage.getItem('ind') == null){
+  ind = localStorage.setItem('ind', 0);
+  ind = 0;
+  console.log('ind null');
 }
+if(localStorage.getItem('ind') != null || localStorage.getItem('ind') != NaN){
+    ind = localStorage.getItem('ind');
+    console.log('ind not null');
+  } else if(localStorage.getItem('size') != null){
+    ind = Math.floor(Math.random()*localStorage.getItem('size'));
+    console.log('size not null');
+  } 
 async function getMp3Url(q) {
-    let res = await $.get({url:'https://gentle-waters-55640.herokuapp.com/api/mp3/?q=' + q, Cache: false});
-    // let data = Object.values(res);
-    // var i = 1;
-    // res = res.split('"')
-    // arr = []
-    // for (index in res) {
-    //     if (res[index].includes('::')) {
-    //         arr.push(res[index]);
-    //     }
-    // }
-    // mp3Url = "https://apiyoutube.cc/m4a/" + arr[1] + "::" + arr[0];
-    return res[mp3Url];
+  let res = await $.get({url:'https://apiyoutube.cc/check.php?callback=jQuery34108672477917974195_1666787018121&v=' + q, Cache: false});
+  // let data = Object.values(res);
+  var i = 1;
+  res = res.split('"')
+  arr = []
+  for (index in res) {
+      if (res[index].includes('::')) {
+          arr.push(res[index]);
+      }
+  }
+  mp3Url = "https://apiyoutube.cc/m4a/" + arr[1] + "::" + arr[0];
+  console.log(mp3Url);
+  return mp3Url;
 }
 
 track_list = [];
@@ -43,6 +52,8 @@ let loop = setInterval(() => {
 
 
 async function start() {
+  ind = localStorage.getItem('ind');
+  console.log(track_list[ind]);
   let url = await getMp3Url(track_list[ind]["url"]);
   $('#src').attr('src', url);
   $('.player').eq(0).remove();
@@ -55,7 +66,7 @@ async function start() {
 </audio>
 </div>`)
   // console.log(url);
-  if(localStorage.getItem('size') != undefined){
+  if(localStorage.getItem('size') != null){
       var size = localStorage.getItem('size');
       ind = Math.floor(Math.random()*track_list.length);
     } 
