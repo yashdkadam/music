@@ -1,26 +1,31 @@
 var ind = 0;
-if(localStorage.getItem('ind') == null){
-  ind = localStorage.setItem('ind', 0);
+if (localStorage.getItem("ind") == null) {
+  ind = localStorage.setItem("ind", 0);
   ind = 0;
-  console.log('ind null');
+  console.log("ind null");
 }
-if(localStorage.getItem('ind') != null || localStorage.getItem('ind') != NaN){
-    ind = localStorage.getItem('ind');
-    console.log('ind not null');
-  } else if(localStorage.getItem('size') != null){
-    ind = Math.floor(Math.random()*localStorage.getItem('size'));
-    console.log('size not null');
-  } 
+if (localStorage.getItem("ind") != null || localStorage.getItem("ind") != NaN) {
+  ind = localStorage.getItem("ind");
+  console.log("ind not null");
+} else if (localStorage.getItem("size") != null) {
+  ind = Math.floor(Math.random() * localStorage.getItem("size"));
+  console.log("size not null");
+}
 async function getMp3Url(q) {
-  let res = await $.get({url:'https://apiyoutube.cc/check.php?callback=jQuery34108672477917974195_1666787018121&v=' + q, Cache: false});
+  let res = await $.get({
+    url:
+      "https://apiyoutube.cc/check.php?callback=jQuery34108672477917974195_1666787018121&v=" +
+      q,
+    Cache: false,
+  });
   // let data = Object.values(res);
   var i = 1;
-  res = res.split('"')
-  arr = []
+  res = res.split('"');
+  arr = [];
   for (index in res) {
-      if (res[index].includes('::')) {
-          arr.push(res[index]);
-      }
+    if (res[index].includes("::")) {
+      arr.push(res[index]);
+    }
   }
   mp3Url = "https://apiyoutube.cc/m4a/" + arr[1] + "::" + arr[0];
   console.log(mp3Url);
@@ -50,29 +55,24 @@ let loop = setInterval(() => {
   }
 }, 200);
 
-
 async function start() {
-  ind = localStorage.getItem('ind');
+  ind = localStorage.getItem("ind");
   console.log(track_list[ind]);
   let url = await getMp3Url(track_list[ind]["url"]);
-  $('#src').attr('src', url);
-  $('.player').eq(0).remove();
-  $('body').append(`
+  $("#src").attr("src", url);
+  $(".player").eq(0).remove();
+  $("body").append(`
   <div id=${ind} class="player">
-  <img src=${track_list[ind]['imgUrl']} alt="" id="image">
-    <h4>${track_list[ind]['name']}</h4>
+  <img src=${track_list[ind]["imgUrl"]} alt="" id="image">
+    <h4>${track_list[ind]["name"]}</h4>
   <audio controls autoplay name="media" onended="start()" id>
-  <source src=${url} type="audio/webm" id="src">
+  <source src=${url} type="audio/mpeg" id="src">
 </audio>
-</div>`)
-  // console.log(url);
-  if(localStorage.getItem('size') != null){
-      var size = localStorage.getItem('size');
-      ind = Math.floor(Math.random()*track_list.length);
-    } 
-    localStorage.setItem('ind', Math.floor(Math.random()*track_list.length));
-    localStorage.setItem('size', track_list.length);
-
-  // console.log(ind);
+</div>`);
+  if (localStorage.getItem("size") != null) {
+    var size = localStorage.getItem("size");
+    ind = Math.floor(Math.random() * track_list.length);
+  }
+  localStorage.setItem("ind", Math.floor(Math.random() * track_list.length));
+  localStorage.setItem("size", track_list.length);
 }
-
