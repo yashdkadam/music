@@ -34,9 +34,7 @@ async function getMp3Url(q) {
 
 track_list = [];
 async function getTrackResponse() {
-  const res = await $.get(
-    "https://shrouded-escarpment-70092.herokuapp.com/api/songs"
-  );
+  const res = await $.get("https://music-node.onrender.com/api/songs");
   let data = Object.values(res);
   var i = 1;
   //   console.log(data);
@@ -55,24 +53,46 @@ let loop = setInterval(() => {
   }
 }, 200);
 
+function checkStatus(params) {
+  var sound = new Audio(url);
+  sound.volume = 0;
+  sound
+    .play()
+    .then(() => {
+      return true;
+    })
+    .catch(() => {
+      return false;
+    });
+}
+
 async function start() {
   ind = localStorage.getItem("ind");
   console.log(track_list[ind]);
   let url = await getMp3Url(track_list[ind]["url"]);
+  // if(checkStatus(url)){
   $("#src").attr("src", url);
   $(".player").eq(0).remove();
   $("body").append(`
-  <div id=${ind} class="player">
-  <img src=${track_list[ind]["imgUrl"]} alt="" id="image">
-    <h4>${track_list[ind]["name"]}</h4>
-  <audio controls autoplay name="media" onended="start()" id>
-  <source src=${url} type="audio/mpeg" id="src">
-</audio>
-</div>`);
+    <div id=${ind} class="player">
+    <img src=${track_list[ind]["imgUrl"]} alt="" id="image">
+      <h4>${track_list[ind]["name"]}</h4>
+    <audio controls autoplay name="media" onended="start()" 
+    ontimeupdate="document.getElementById('tracktime').innerHTML = Math.floor(this.currentTime) + ' / ' + Math.floor(this.duration);">
+    id>
+    <source src=${url} type="audio/mpeg" id="src">
+  </audio> <span><button onclick="start()">Next</button></span>
+  <p id="tracktime"></p>
+  </div>`);
+  $(".player").ready(function () {});
   if (localStorage.getItem("size") != null) {
     var size = localStorage.getItem("size");
     ind = Math.floor(Math.random() * track_list.length);
   }
   localStorage.setItem("ind", Math.floor(Math.random() * track_list.length));
   localStorage.setItem("size", track_list.length);
+  // } else{
+  // localStorage.setItem('ind', ind);
+  // start();
+  // }
 }
