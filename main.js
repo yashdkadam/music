@@ -34,7 +34,7 @@ async function getMp3Url(q) {
 
 track_list = [];
 async function getTrackResponse() {
-  const res = await $.get("https://music-node.onrender.com/api/songs");
+  const res = await $.get("https://curious-parka-yak.cyclic.app/api/songs");
   let data = Object.values(res);
   var i = 1;
   //   console.log(data);
