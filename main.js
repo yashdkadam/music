@@ -13,23 +13,11 @@ if (localStorage.getItem("ind") != null || localStorage.getItem("ind") != NaN) {
 }
 async function getMp3Url(q) {
   let res = await $.get({
-    url:
-      "https://apiyoutube.cc/check.php?callback=jQuery34108672477917974195_1666787018121&v=" +
-      q,
+    url: "https://curious-parka-yak.cyclic.app/api/url/" + q,
     Cache: false,
   });
-  // let data = Object.values(res);
-  var i = 1;
-  res = res.split('"');
-  arr = [];
-  for (index in res) {
-    if (res[index].includes("::")) {
-      arr.push(res[index]);
-    }
-  }
-  mp3Url = "https://apiyoutube.cc/m4a/" + arr[1] + "::" + arr[0];
-  console.log(mp3Url);
-  return mp3Url;
+  console.log(res);
+  return res["url"];
 }
 
 track_list = [];
