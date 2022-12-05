@@ -22,15 +22,16 @@ async function getMp3Url(q) {
 
 track_list = [];
 async function getTrackResponse() {
-  const res = await $.get("https://curious-parka-yak.cyclic.app/api/songs");
+  const res = await $.get("https://curious-parka-yak.cyclic.app/api/songs/");
   let data = Object.values(res);
+  console.log(data);
   var i = 1;
   //   console.log(data);
   // data.reverse();
   for (index in data) {
     track_list.push(data[index]);
   }
-  // console.log(track_list);
+  console.log(track_list);
 }
 getTrackResponse();
 let loop = setInterval(() => {
@@ -57,9 +58,9 @@ function checkStatus(params) {
 async function start() {
   ind = localStorage.getItem("ind");
   console.log(track_list[ind]);
-  let url = await getMp3Url(track_list[ind]["url"]);
+  // let url = await getMp3Url(track_list[ind]["url"]);
   // if(checkStatus(url)){
-  $("#src").attr("src", url);
+  $("#src").attr("src", track_list[ind]["previewUrl"]);
   $(".player").eq(0).remove();
   $("body").append(`
     <div id=${ind} class="player">
@@ -68,7 +69,7 @@ async function start() {
     <audio controls autoplay name="media" onended="start()" 
     ontimeupdate="document.getElementById('tracktime').innerHTML = Math.floor(this.currentTime) + ' / ' + Math.floor(this.duration);">
     id>
-    <source src=${url} type="audio/mpeg" id="src">
+    <source src=${track_list[ind]["previewUrl"]} type="audio/mpeg" id="src">
   </audio> <span><button onclick="start()">Next</button></span>
   <p id="tracktime"></p>
   </div>`);
